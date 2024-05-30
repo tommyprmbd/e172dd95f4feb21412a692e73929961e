@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  app: 
+    container_name: levart_php
+    image: tommyprmbd/php-fpm8.3:latest
+    volumes:
+      - ./src:/apps/api
+    ports:
+      - ${DOCKER_PHP_BIND_PORT}:9000
+    networks:
+      levart_network:
+        ipv4_address: ${DOCKER_PHP_IP_ADDRESS} 
+
+  db:
+    container_name: levart_postgres
+    image: postgres:16-alpine
+    volumes:
+      - ./docker/data:/var/lib/pgsql/data
+    ports:
+      - ${DOCKER_POSTGRES_BIND_PORT}:5432
+    environment:
+      - POSTGRES_PASSWORD=${DOCKER_POSTGRES_PASSWORD}
+      - POSTGRES_USER=${DOCKER_POSTGRES_USER}
+      - POSTGRES_DB=${DOCKER_POSTGRES_DB}
+    networks:
+      levart_network:
+        ipv4_address: ${DOCKER_POSTGRES_IP_ADDRESS} 
+
+  web:
+    container_name: levart_nginx
+    image: nginx:stable-alpine
+    volumes:
+      - ./src:/apps/api
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    ports:
+      - ${DOCKER_NGINX_BIND_PORT}:80
+    networks:
+      levart_network:
+        ipv4_address: ${DOCKER_NGINX_IP_ADDRESS}
+
+networks:
+  levart_network:
+    ipam:
+      config:
+        - subnet: ${DOCKER_NETWORK_SUBNET}
