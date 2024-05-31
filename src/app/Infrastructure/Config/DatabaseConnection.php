@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-30 16:31:40
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-05-31 21:36:10
+ * @ Modified time: 2024-05-31 22:23:51
  * @ Description:
  */
 
@@ -39,7 +39,7 @@ class DatabaseConnection implements DatabaseConfigInterface
         }
     }
 
-    public function getConnection() {
+    public function getConnection(): PDO {
         return $this->connection;
     }
 }
