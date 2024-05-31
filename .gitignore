@@ -1,1 +1,6 @@
 .env
+
+/src/vendor
+/src/.env
+
+/docker/postgres/data
