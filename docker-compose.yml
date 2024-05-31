@@ -15,7 +15,7 @@ services:
     container_name: levart_postgres
     image: postgres:16-alpine
     volumes:
-      - ./docker/data:/var/lib/pgsql/data
+      - ./docker/postgres:/var/lib/postgresql
     ports:
       - ${DOCKER_POSTGRES_BIND_PORT}:5432
     environment:

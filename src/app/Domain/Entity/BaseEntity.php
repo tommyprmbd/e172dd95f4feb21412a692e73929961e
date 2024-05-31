@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-31 21:15:12
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-05-31 21:53:29
+ * @ Modified time: 2024-06-01 01:55:20
  * @ Description:
  */
 
@@ -15,7 +15,7 @@ abstract class BaseEntity implements BaseEntityInterface
 {
     protected int $id;
 
-    private DateTime $createdAt;
+    private $createdAt;
     
     public function getId() {
         return $this->id;
@@ -25,11 +25,11 @@ abstract class BaseEntity implements BaseEntityInterface
         $this->id = $id;
     }
 
-    public function getCreatedAt(): DateTime {
+    public function getCreatedAt() {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTime $createdAt) {
+    public function setCreatedAt($createdAt) {
         $this->createdAt = $createdAt;
     }
 }

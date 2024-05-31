@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-31 20:55:11
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-05-31 21:04:35
+ * @ Modified time: 2024-06-01 02:14:33
  * @ Description:
  */
 
@@ -16,6 +16,7 @@ class UserMapper implements UserMapperInterface
 {
     public static function toModel($row): User
     {
+        $row = (object)$row;
         $user = new User();
         $user->setId($row->id);
         $user->setFirstName($row->first_name);
@@ -24,14 +25,22 @@ class UserMapper implements UserMapperInterface
         $user->setPassword($row->password);
         $user->setCreatedAt($row->created_at);
         return $user;
-    }    
+    }  
 
-    public static function toList($rows): array
+    public static function toModelList($rows): array
     {
         $list = [];
         foreach ($rows as $row) {
-            $list[] = self::toModel($row);
+            $list[] = self::toModel($row)->toArray();
         }
         return $list;
+    }
+    
+    public static function fromModel(User $row) {
+
+    }
+
+    public static function toList($rows) {
+    
     }
 }

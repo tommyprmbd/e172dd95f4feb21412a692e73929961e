@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-31 22:35:17
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 00:28:15
+ * @ Modified time: 2024-06-01 01:48:25
  * @ Description:
  */
 
@@ -13,7 +13,7 @@ use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\UseCase\UseCaseInterface;
 use App\Infrastructure\Repository\UserRepository;
 
-class UserFindAllUseCase implements UseCaseInterface
+class UserFindAllUseCase
 {
     private UserRepositoryInterface $userRepositoryInterface;
 
@@ -21,7 +21,7 @@ class UserFindAllUseCase implements UseCaseInterface
         $this->userRepositoryInterface = $userRepositoryInterface;    
     }
 
-    public function execute(...$input = null)
+    public function execute()
     {
         return $this->userRepositoryInterface->findAll();
     }

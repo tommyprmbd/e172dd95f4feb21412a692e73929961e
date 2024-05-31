@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-31 20:52:49
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-05-31 21:04:10
+ * @ Modified time: 2024-06-01 02:08:16
  * @ Description:
  */
 
@@ -15,5 +15,5 @@ interface UserMapperInterface
 {
     public static function toModel($row) : User;
 
-    public static function toList($rows) : array;
+    public static function toModelList($rows) : array;
 }

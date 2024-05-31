@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-31 15:22:06
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-05-31 22:21:21
+ * @ Modified time: 2024-06-01 02:06:26
  * @ Description:
  */
 
@@ -21,8 +21,11 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     public function findAll()
     {
         $query = $this->db()->query('select * from ' . $this->table);
-        $rows = $query->fetch(PDO::FETCH_ASSOC);
-        return UserMapper::toList($rows);
+        $rows = $query->fetchAll(PDO::FETCH_ASSOC);
+        if ($rows === false) {
+            return [];
+        }
+        return UserMapper::toModelList($rows);
     }
 
     public function findById(int $id)

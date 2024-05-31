@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-31 22:28:32
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-05-31 23:15:03
+ * @ Modified time: 2024-06-01 02:15:17
  * @ Description:
  */
 
@@ -22,7 +22,11 @@ class UserController implements UserControllerInterface
     }
 
     public function findAll() {
-        return (new UserFindAllUseCase($this->userRepository))->execute();
+        $result = (new UserFindAllUseCase($this->userRepository))->execute();
+        // echo "<pre>";
+        // print_r($result);
+        // echo "</pre>";
+        return $result;
     }
     
     public function findById(int $id) {
