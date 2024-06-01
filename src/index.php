@@ -3,20 +3,28 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-30 15:40:53
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 23:08:48
+ * @ Modified time: 2024-06-01 23:56:30
  * @ Description:
  */
+
 require 'vendor/autoload.php';
 
+
+use App\Infrastructure\Exception\InvalidJsonException;
+use App\Infrastructure\Presenter\BasePresenter;
+use App\Infrastructure\Response\StatusResponse;
 use Dotenv\Dotenv;
 use App\Infrastructure\Config\DatabaseConnection;
 use App\Infrastructure\Controllers\UserController;
 use App\Infrastructure\Repository\UserRepository;
 use App\Infrastructure\Response\HttpResponse;
+use App\Infrastructure\Response\HttpStatus;
 use App\Infrastructure\Route\Router;
 
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
+
+ini_set('display_errors', $_ENV["APP_ENV"] == 'development' ? 1 : 0); // development | production
 
 $pdo = (new DatabaseConnection())->getConnection();
 
@@ -34,10 +42,10 @@ $router = new Router($routes, $_ENV['APP_URL'] ?? 'http://localhost');
 try {
     $requestUri = $_SERVER['REQUEST_URI'];
     $requestMethod = $_SERVER['REQUEST_METHOD'];
-    // echo "<pre>";
-    // print_r([$requestUri, $requestMethod]);
-    // print_r("================");
-    // echo "</pre>";
+
+    $header = new HttpResponse([$requestMethod]);
+    $header->setHeader();
+
     $route = $router->matchFromPathAndMethod($requestUri, $requestMethod);
     $handler = $route->getHandler();
     $attributes = $route->getAttributes();
@@ -54,7 +62,8 @@ try {
     if (in_array($requestMethod, ['POST', 'PUT'])) {
         $requestBody = json_decode(file_get_contents('php://input'), true);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \Exception('Invalid JSON in request body');
+            echo (new InvalidJsonException())->message();
+            exit();
         }
 
         $response = $controller($requestBody);
@@ -63,7 +72,7 @@ try {
     }
 
     $statusCode = $response->status->code;
-    (new HttpResponse($statusCode, [$requestMethod]))->setHeader();
+    $header->setHeaderStatusCode($statusCode);
     
     echo $response;
 

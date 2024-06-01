@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-31 22:28:32
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 23:17:14
+ * @ Modified time: 2024-06-01 23:27:57
  * @ Description:
  */
 
@@ -35,6 +35,14 @@ class UserController
     }
     
     public function findById(int $id) {
+        $user = (new UserFindByIdUseCase($this->userRepository))->handle($id);
+        if ($user === null) {
+            return new BasePresenter(
+                null, 
+                new StatusResponse(HttpStatus::NOT_FOUND["code"], HttpStatus::NOT_FOUND["message"]),
+            );
+        }
+
         return new BasePresenter((new UserFindByIdUseCase($this->userRepository))->handle($id));
     }
 

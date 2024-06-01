@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-06-01 17:51:58
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 23:08:26
+ * @ Modified time: 2024-06-01 23:54:40
  * @ Description:
  */
 
@@ -13,18 +13,24 @@ use App\Infrastructure\Response\HttpStatus;
 
 final class HttpResponse
 {
-    private int $code;
-
     private array $methods = [];
 
-    public function __construct(int $code, array $methods) {
-        $this->code = $code;
+    public function __construct(array $methods) {
         $this->methods = $methods;
     }
 
-    public function setHeader(): void {
+    public function setHeader() {
+        $methods = implode(",", $this->methods);
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: application/json; charset=UTF-8");
+        header("Access-Control-Allow-Methods: {$methods}");
+        header("Access-Control-Max-Age: 3600");
+        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+    }
+
+    public function setHeaderStatusCode(int $code): void {
         $message = HttpStatus::OK["message"];
-        switch ($this->code) {
+        switch ($code) {
             case HttpStatus::BAD_REQUEST["code"]: 
                 $message = HttpStatus::BAD_REQUEST["message"];
                 break;
@@ -50,12 +56,6 @@ final class HttpResponse
                 break;
         }
         
-        $methods = implode(",", $this->methods);
-        header("Access-Control-Allow-Origin: *");
-        header("Content-Type: application/json; charset=UTF-8");
-        header("Access-Control-Allow-Methods: {$methods}");
-        header("Access-Control-Max-Age: 3600");
-        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-        header("HTTP/1.0 {$this->code} {$message}");
+        header("HTTP/1.0 {$code} {$message}");
     }
 }

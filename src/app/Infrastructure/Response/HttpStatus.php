@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-06-01 17:40:10
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 22:30:21
+ * @ Modified time: 2024-06-01 23:28:14
  * @ Description:
  */
 
@@ -12,7 +12,7 @@ namespace App\Infrastructure\Response;
 class HttpStatus 
 {
     public const NOT_FOUND = [
-        "code" => 400, 
+        "code" => 404, 
         "message" => "Not Found."
     ];
 
