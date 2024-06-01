@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-31 01:44:58
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 12:19:00
+ * @ Modified time: 2024-06-02 02:39:51
  * @ Description:
  */
 
@@ -13,7 +13,7 @@ class User extends BaseEntity
 {
     private string $first_name;
 
-    private $last_name;
+    private ?string $last_name;
 
     private string $email;
 
@@ -51,8 +51,7 @@ class User extends BaseEntity
         $this->password = $password;
     }
 
-    public function toArray()
-    {
+    public function toArray(): array {
         return [
             'id' => $this->getId(),
             'createdAt' => $this->getCreatedAt(),
