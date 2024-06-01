@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-06-01 13:21:37
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 13:23:19
+ * @ Modified time: 2024-06-01 22:30:54
  * @ Description:
  */
 
@@ -15,7 +15,7 @@ final class StatusResponse
 
     public string $message;
 
-    public function __construct(int $code = 200, string $message = "Ok.") {
+    public function __construct(int $code = HttpStatus::OK["code"], string $message = HttpStatus::OK["message"]) {
         $this->code = $code;
         $this->message = $message;
     }

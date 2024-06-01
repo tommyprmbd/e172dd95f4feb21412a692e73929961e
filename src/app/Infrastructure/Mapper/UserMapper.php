@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-31 20:55:11
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 14:06:13
+ * @ Modified time: 2024-06-01 22:32:20
  * @ Description:
  */
 
@@ -15,9 +15,6 @@ use App\Infrastructure\Helpers\DateHelper;
 
 class UserMapper implements MapperInterface 
 {
-    /**
-     * @param User $row
-     */
     public static function toModel($row): User
     {
         $row = (object)$row;

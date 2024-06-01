@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-06-01 13:18:07
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 14:01:01
+ * @ Modified time: 2024-06-01 23:24:40
  * @ Description:
  */
 
@@ -11,8 +11,10 @@ namespace App\Infrastructure\Presenter;
 
 use App\Domain\Entity\User;
 use App\Infrastructure\Mapper\UserMapper;
+use App\Infrastructure\Response\HttpStatus;
 use App\Infrastructure\Response\MetaResponse;
 use App\Infrastructure\Response\StatusResponse;
+use App\Infrastructure\Validator\FieldError;
 
 class BasePresenter
 {
@@ -37,16 +39,28 @@ class BasePresenter
     }
 
     private function transform($data) {
+        if ($data instanceof \PDOException) {
+            $this->status = new StatusResponse(
+                HttpStatus::BAD_REQUEST['code'], 
+                HttpStatus::BAD_REQUEST['message'],
+            );
+            return $data->getMessage();
+        }
+
+        if ($data instanceof FieldError) {
+            return $data->getError();
+        }
+
         if (is_array($data) && !empty($data)) {
             $className = (new \ReflectionClass($data[0]))->getShortName();
             $mapper = $this->getMapper($className);
-            $data = $mapper::toList($data);
+            return $mapper::toList($data);
         }
 
         if (is_object($data)) {
             $className = (new \ReflectionClass($data))->getShortName();
             $mapper = $this->getMapper($className);
-            $data = $mapper::fromModel($data);
+            return $mapper::fromModel($data);
         }
 
         return $data;

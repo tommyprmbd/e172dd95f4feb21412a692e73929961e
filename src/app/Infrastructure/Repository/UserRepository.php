@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-31 15:22:06
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 13:39:41
+ * @ Modified time: 2024-06-01 23:18:54
  * @ Description:
  */
 
@@ -43,18 +43,22 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     /**
      * @param User $user
      */
-    public function create($user): User {
+    public function create($user): User | \PDOException {
         if (!$user instanceof User) {
             throw new \InvalidArgumentException('Expected User entity object as parameter.');
         }
 
-        $query = $this->db()->prepare('insert into '. $this->table . ' (email, password, first_name, last_name) values (:email, :password, :first_name, :last_name)');
-        $query->bindValue(':email', $user->getEmail(), PDO::PARAM_STR);
-        $query->bindValue(':password', $user->getPassword(), PDO::PARAM_STR);
-        $query->bindValue(':first_name', $user->getFirstName(), PDO::PARAM_STR);
-        $query->bindValue(':last_name', $user->getLastName(), PDO::PARAM_STR);
-        $query->execute();
-        $user->setId($this->db()->lastInsertId());
+        try {
+            $query = $this->db()->prepare('insert into '. $this->table . ' (email, password, first_name, last_name) values (:email, :password, :first_name, :last_name)');
+            $query->bindValue(':email', $user->getEmail(), PDO::PARAM_STR);
+            $query->bindValue(':password', $user->getPassword(), PDO::PARAM_STR);
+            $query->bindValue(':first_name', $user->getFirstName(), PDO::PARAM_STR);
+            $query->bindValue(':last_name', $user->getLastName(), PDO::PARAM_STR);
+            $query->execute();
+            $user->setId($this->db()->lastInsertId());
+        } catch (\PDOException $e) {
+            return $e;
+        }
 
         return $user;
     }

@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-06-01 13:09:50
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 13:17:31
+ * @ Modified time: 2024-06-01 14:13:39
  * @ Description:
  */
 
@@ -19,7 +19,7 @@ class UserFindByIdUseCase
         $this->userRepositoryInterface = $userRepositoryInterface;    
     }
 
-    public function execute(int $id)
+    public function handle(int $id)
     {
         return $this->userRepositoryInterface->findById($id);
     }

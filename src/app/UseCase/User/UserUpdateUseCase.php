@@ -1,17 +1,18 @@
 <?php
 /**
  * @ Author: Tommyprmbd
- * @ Create Time: 2024-05-31 22:35:17
+ * @ Create Time: 2024-06-01 14:11:48
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 14:13:36
+ * @ Modified time: 2024-06-01 14:15:53
  * @ Description:
  */
 
 namespace App\UseCase\User;
 
+use App\Domain\Entity\User;
 use App\Domain\Repository\UserRepositoryInterface;
 
-class UserFindAllUseCase
+class UserUpdateUseCase
 {
     private UserRepositoryInterface $userRepositoryInterface;
 
@@ -19,7 +20,7 @@ class UserFindAllUseCase
         $this->userRepositoryInterface = $userRepositoryInterface;    
     }
 
-    public function handle(): array {
-        return $this->userRepositoryInterface->findAll();
+    public function handle(User $user) {
+        return $this->userRepositoryInterface->update($user);
     }
 }
