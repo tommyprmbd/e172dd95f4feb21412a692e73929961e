@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-06-01 14:11:48
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 22:24:15
+ * @ Modified time: 2024-06-02 00:21:19
  * @ Description:
  */
 
@@ -26,7 +26,7 @@ class UserCreateUseCase
         $user->setEmail($dto->getEmail());
         $user->setFirstName($dto->getFirstName());
         $user->setLastName($dto->getLastName());
-        $user->setPassword($dto->getPassword());
+        $user->setPassword(password_hash($dto->getPassword(), PASSWORD_DEFAULT));
         
         return $this->userRepositoryInterface->create($user);
     }
