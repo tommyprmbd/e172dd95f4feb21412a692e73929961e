@@ -11,4 +11,6 @@ namespace App\Domain\Repository;
 
 use App\Domain\Entity\User;
 
-interface UserRepositoryInterface extends RepositoryInterface {}
+interface UserRepositoryInterface extends RepositoryInterface {
+    public function findByEmail(string $email): ?User;
+}

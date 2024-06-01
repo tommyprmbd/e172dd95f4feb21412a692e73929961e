@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-31 15:22:06
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 23:18:54
+ * @ Modified time: 2024-06-02 00:36:04
  * @ Description:
  */
 
@@ -27,9 +27,22 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         return UserMapper::toModelList($rows);
     }
 
-    public function findById(int $id): User | null {
+    public function findById(int $id): ?User {
         $query = $this->db()->prepare('select * from ' . $this->table . ' where id = :id');
         $query->bindValue('id', $id, PDO::PARAM_INT);
+        $query->execute();
+
+        $row = $query->fetch(PDO::FETCH_ASSOC);
+        if ($row) {
+            return UserMapper::toModel($row);
+        }
+
+        return null;
+    }
+
+    public function findByEmail(string $email): ?User {
+        $query = $this->db()->prepare('select * from ' . $this->table . ' where email = :email');
+        $query->bindValue('email', $email, PDO::PARAM_STR);
         $query->execute();
 
         $row = $query->fetch(PDO::FETCH_ASSOC);

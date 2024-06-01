@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-30 15:40:53
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-02 00:14:30
+ * @ Modified time: 2024-06-02 01:06:52
  * @ Description:
  */
 
@@ -60,7 +60,6 @@ try {
         $controller =  [$controller, $methodName];
     }
 
-    $requestBody = null;
     if (in_array($requestMethod, ['POST', 'PUT'])) {
         $requestBody = json_decode(file_get_contents('php://input'), true);
         if (json_last_error() !== JSON_ERROR_NONE) {
@@ -68,10 +67,9 @@ try {
             exit();
         }
 
-        $response = $controller($requestBody);
-    } else {
-        $response = $controller(...array_values($attributes));
-    }
+        array_push($attributes, $requestBody);
+    } 
+    $response = $controller(...array_values($attributes));
 
     $statusCode = $response->status->code;
     $header->setHeaderStatusCode($statusCode);

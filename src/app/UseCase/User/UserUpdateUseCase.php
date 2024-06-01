@@ -3,14 +3,15 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-06-01 14:11:48
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 14:15:53
+ * @ Modified time: 2024-06-02 01:12:14
  * @ Description:
  */
 
 namespace App\UseCase\User;
 
-use App\Domain\Entity\User;
+use App\Domain\Dto\UpdateUserDtoInterface;
 use App\Domain\Repository\UserRepositoryInterface;
+use App\Infrastructure\Exception\NotFoundException;
 
 class UserUpdateUseCase
 {
@@ -20,7 +21,20 @@ class UserUpdateUseCase
         $this->userRepositoryInterface = $userRepositoryInterface;    
     }
 
-    public function handle(User $user) {
+    public function handle(UpdateUserDtoInterface $dto, int $id) {
+        // get user by email
+        $user = $this->userRepositoryInterface->findById($id);
+        if (!$user) {
+            throw new NotFoundException("User ID not found.");
+        }
+
+        if (!isEmpty($dto->getPassword())) {
+            $user->setPassword(password_hash($dto->getPassword(), PASSWORD_DEFAULT));
+        }
+        $user->setFirstName($dto->getFirstName());
+        $user->setLastName($dto->getLastName());
+        $user->setEmail($dto->getEmail());
+
         return $this->userRepositoryInterface->update($user);
     }
 }

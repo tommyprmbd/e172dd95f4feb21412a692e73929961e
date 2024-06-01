@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-31 22:28:32
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 23:27:57
+ * @ Modified time: 2024-06-02 01:07:24
  * @ Description:
  */
 
@@ -11,6 +11,7 @@ namespace App\Infrastructure\Controllers;
 
 use App\Domain\Controllers\UserControllerInterface;
 use App\Infrastructure\Dto\CreateUserDto;
+use App\Infrastructure\Dto\UpdateUserDto;
 use App\Infrastructure\Mapper\UserMapper;
 use App\Infrastructure\Presenter\BasePresenter;
 use App\Infrastructure\Repository\UserRepository;
@@ -22,7 +23,7 @@ use App\UseCase\User\UserFindAllUseCase;
 use App\UseCase\User\UserFindByIdUseCase;
 use App\UseCase\User\UserUpdateUseCase;
 
-class UserController
+class UserController implements UserControllerInterface
 {
     private UserRepository $userRepository;
 
@@ -61,8 +62,16 @@ class UserController
         );
     }
 
-    public function update(array $data) {
-        return new BasePresenter((new UserUpdateUseCase($this->userRepository))->handle(UserMapper::toModel($data)));
+    public function update(?int $id, ?array $data) {
+        $validation = (new UpdateUserDto($data))->validate();
+        if ($validation->fails()) {
+            return new BasePresenter(
+                $validation->getErrors(), 
+                new StatusResponse(HttpStatus::BAD_REQUEST["code"], HttpStatus::BAD_REQUEST["message"]),
+            );
+        }
+
+        return new BasePresenter((new UserUpdateUseCase($this->userRepository))->handle($validation->getData(), $id));
     }
 
     public function delete(int $id) {
