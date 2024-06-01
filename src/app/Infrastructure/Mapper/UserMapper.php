@@ -3,17 +3,21 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-31 20:55:11
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 02:14:33
+ * @ Modified time: 2024-06-01 14:06:13
  * @ Description:
  */
 
 namespace App\Infrastructure\Mapper;
 
 use App\Domain\Entity\User;
-use App\Domain\Mapper\UserMapperInterface;
+use App\Domain\Mapper\MapperInterface;
+use App\Infrastructure\Helpers\DateHelper;
 
-class UserMapper implements UserMapperInterface 
+class UserMapper implements MapperInterface 
 {
+    /**
+     * @param User $row
+     */
     public static function toModel($row): User
     {
         $row = (object)$row;
@@ -23,7 +27,7 @@ class UserMapper implements UserMapperInterface
         $user->setLastName($row->last_name);
         $user->setEmail($row->email);
         $user->setPassword($row->password);
-        $user->setCreatedAt($row->created_at);
+        $user->setCreatedAt((new DateHelper($row->created_at))->createdAt());
         return $user;
     }  
 
@@ -31,16 +35,28 @@ class UserMapper implements UserMapperInterface
     {
         $list = [];
         foreach ($rows as $row) {
-            $list[] = self::toModel($row)->toArray();
+            $list[] = self::toModel($row);
         }
         return $list;
     }
     
-    public static function fromModel(User $row) {
-
+    /**
+     * @param User $row
+     */
+    public static function fromModel($row) {
+        $row->setCreatedAt((new DateHelper($row->getCreatedAt()))->createdAt());
+        $response = $row->toArray();
+        unset($response["password"]);
+        return $response;
     }
 
-    public static function toList($rows) {
-    
+    public static function toList(array $rows): array {
+        $list = [];
+        foreach ($rows as $row) {
+            $user = $row->toArray();
+            unset($user["password"]);
+            $list[] = $user;
+        }
+        return $list;
     }
 }

@@ -1,9 +1,9 @@
 <?php
 /**
  * @ Author: Tommyprmbd
- * @ Create Time: 2024-05-31 22:35:17
+ * @ Create Time: 2024-06-01 13:09:50
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 13:38:50
+ * @ Modified time: 2024-06-01 13:17:31
  * @ Description:
  */
 
@@ -11,7 +11,7 @@ namespace App\UseCase\User;
 
 use App\Domain\Repository\UserRepositoryInterface;
 
-class UserFindAllUseCase
+class UserFindByIdUseCase
 {
     private UserRepositoryInterface $userRepositoryInterface;
 
@@ -19,7 +19,8 @@ class UserFindAllUseCase
         $this->userRepositoryInterface = $userRepositoryInterface;    
     }
 
-    public function execute(): array {
-        return $this->userRepositoryInterface->findAll();
+    public function execute(int $id)
+    {
+        return $this->userRepositoryInterface->findById($id);
     }
 }

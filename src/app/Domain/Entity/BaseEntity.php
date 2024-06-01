@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-31 21:15:12
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 01:55:20
+ * @ Modified time: 2024-06-01 12:54:59
  * @ Description:
  */
 
@@ -32,4 +32,6 @@ abstract class BaseEntity implements BaseEntityInterface
     public function setCreatedAt($createdAt) {
         $this->createdAt = $createdAt;
     }
+
+    abstract public function toArray();
 }

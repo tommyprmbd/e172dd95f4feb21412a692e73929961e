@@ -3,14 +3,13 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-06-01 01:29:05
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 01:37:32
+ * @ Modified time: 2024-06-01 13:16:01
  * @ Description:
  */
 use DevCoder\Route;
 use DevCoder\Router;
 
-$routes = [
-    new Route('find-all-users', '/api/users', [\App\Infrastructure\Controllers\UserController::class, 'findAll'], ['GET']),
+return [
+    new Route('users-find-all', '/api/users', [\App\Infrastructure\Controllers\UserController::class, 'findAll'], ['GET']),
+    new Route('users-find-by-id', '/api/users/{id}', [\App\Infrastructure\Controllers\UserController::class, 'findById'], ['GET']),
 ];
-
-return new Router($routes, $_ENV['APP_URL'] ?? 'http://localhost:8081');

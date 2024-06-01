@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-30 15:40:53
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 02:17:31
+ * @ Modified time: 2024-06-01 13:58:09
  * @ Description:
  */
 require 'vendor/autoload.php';
@@ -12,6 +12,7 @@ use Dotenv\Dotenv;
 use App\Infrastructure\Config\DatabaseConnection;
 use App\Infrastructure\Controllers\UserController;
 use App\Infrastructure\Repository\UserRepository;
+use DevCoder\Router;
 
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
@@ -25,7 +26,9 @@ $userRepository = new UserRepository($pdo);
 $userController = new UserController($userRepository);
 
 /** Routes */
-$router = require __DIR__ .'/routes/api.php';
+$routes = require __DIR__ .'/routes/api.php';
+
+$router = new Router($routes, $_ENV['APP_URL'] ?? 'http://localhost');
 
 try {
     $requestUri = $_SERVER['REQUEST_URI'];
@@ -43,11 +46,14 @@ try {
     }
     
     $response = $controller(...array_values($attributes));
-    if (is_array($response)) {
-        echo json_encode($response);
-    } else {
-        echo $response;
-    }
+
+    header('Content-Type: application/json');
+    echo $response;
+    // if (is_array($response)) {
+    //     echo json_encode($response);
+    // } else {
+    //     echo $response;
+    // }
 
 } catch (\DevCoder\Exception\MethodNotAllowed $exception) {
     header("HTTP/1.0 405 Method Not Allowed");

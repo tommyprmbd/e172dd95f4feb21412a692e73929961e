@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-31 15:22:06
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 02:06:26
+ * @ Modified time: 2024-06-01 13:39:41
  * @ Description:
  */
 
@@ -18,8 +18,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
     private string $table = "users";
 
-    public function findAll()
-    {
+    public function findAll(): array {
         $query = $this->db()->query('select * from ' . $this->table);
         $rows = $query->fetchAll(PDO::FETCH_ASSOC);
         if ($rows === false) {
@@ -28,8 +27,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         return UserMapper::toModelList($rows);
     }
 
-    public function findById(int $id)
-    {
+    public function findById(int $id): User | null {
         $query = $this->db()->prepare('select * from ' . $this->table . ' where id = :id');
         $query->bindValue('id', $id, PDO::PARAM_INT);
         $query->execute();
@@ -45,8 +43,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     /**
      * @param User $user
      */
-    public function create($user)
-    {
+    public function create($user): User {
         if (!$user instanceof User) {
             throw new \InvalidArgumentException('Expected User entity object as parameter.');
         }
@@ -65,7 +62,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     /**
      * @param User $user
      */
-    public function update($user) {
+    public function update($user): User {
         if (!$user instanceof User) {
             throw new \InvalidArgumentException('Expected User entity object as parameter.');
         }
@@ -87,9 +84,9 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         return $user;
     }
 
-    public function delete(int $id) {
+    public function delete(int $id): bool {
         $query = $this->db()->prepare('delete from ' . $this->table . ' where id = :id');
         $query->bindValue(':id', $id, PDO::PARAM_INT);
-        $query->execute();
+        return $query->execute();
     }
 }

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
+use Phinx\Util\Literal;
 
 final class CreateUsersTable extends AbstractMigration
 {
@@ -24,7 +25,10 @@ final class CreateUsersTable extends AbstractMigration
             ->addColumn("password","string", ["limit"=> 100, "null"=> false])
             ->addColumn("first_name","string", ["limit"=> 50, "null"=> false])
             ->addColumn("last_name","string", ["limit"=> 50])
-            ->addColumn("created_at","timestamp")
+            ->addColumn('created_at', 'timestamp', [
+                'timezone' => true,
+                'default' => Literal::from('now()')
+            ])
             ->addIndex(["email"], ["unique"=> true])
             ->create();
     }
