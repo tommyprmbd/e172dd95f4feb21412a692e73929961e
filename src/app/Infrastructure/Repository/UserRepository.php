@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-31 15:22:06
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-02 00:36:04
+ * @ Modified time: 2024-06-02 01:19:09
  * @ Description:
  */
 
@@ -79,31 +79,41 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     /**
      * @param User $user
      */
-    public function update($user): User {
+    public function update($user): User | \PDOException {
         if (!$user instanceof User) {
             throw new \InvalidArgumentException('Expected User entity object as parameter.');
         }
 
-        $query = $this->db()->prepare('update '. $this->table . ' set 
-            email = :email,
-            password = :password,
-            first_name = :first_name,
-            last_name = :last_name
-        where 
-            id = :id');
-        $query->bindValue(':email', $user->getEmail(), PDO::PARAM_STR);
-        $query->bindValue(':password', $user->getPassword(), PDO::PARAM_STR);
-        $query->bindValue(':first_name', $user->getFirstName(), PDO::PARAM_STR);
-        $query->bindValue(':last_name', $user->getLastName(), PDO::PARAM_STR);
-        $query->bindValue(':id', $user->getId(), PDO::PARAM_INT);
-        $query->execute();
+        try {
+            $query = $this->db()->prepare('update '. $this->table . ' set 
+                email = :email,
+                password = :password,
+                first_name = :first_name,
+                last_name = :last_name
+            where 
+                id = :id');
+            $query->bindValue(':email', $user->getEmail(), PDO::PARAM_STR);
+            $query->bindValue(':password', $user->getPassword(), PDO::PARAM_STR);
+            $query->bindValue(':first_name', $user->getFirstName(), PDO::PARAM_STR);
+            $query->bindValue(':last_name', $user->getLastName(), PDO::PARAM_STR);
+            $query->bindValue(':id', $user->getId(), PDO::PARAM_INT);
+            $query->execute();
+        } catch (\PDOException $e) {
+            return $e;
+        }
 
         return $user;
     }
 
-    public function delete(int $id): bool {
-        $query = $this->db()->prepare('delete from ' . $this->table . ' where id = :id');
-        $query->bindValue(':id', $id, PDO::PARAM_INT);
-        return $query->execute();
+    public function delete(int $id): bool | \PDOException {
+        try {
+            $query = $this->db()->prepare('delete from ' . $this->table . ' where id = :id');
+            $query->bindValue(':id', $id, PDO::PARAM_INT);
+            $query->execute();
+        } catch (\PDOException $e) {
+            return false;
+        }
+
+        return true;
     }
 }

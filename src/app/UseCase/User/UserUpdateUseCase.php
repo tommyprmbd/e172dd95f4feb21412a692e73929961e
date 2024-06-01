@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-06-01 14:11:48
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-02 01:12:14
+ * @ Modified time: 2024-06-02 01:16:06
  * @ Description:
  */
 
@@ -22,7 +22,7 @@ class UserUpdateUseCase
     }
 
     public function handle(UpdateUserDtoInterface $dto, int $id) {
-        // get user by email
+        // get user by id
         $user = $this->userRepositoryInterface->findById($id);
         if (!$user) {
             throw new NotFoundException("User ID not found.");
