@@ -3,12 +3,14 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-06-01 15:11:30
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 16:09:31
+ * @ Modified time: 2024-06-02 00:16:47
  * @ Description:
  */
 
 namespace App\Infrastructure\Route;
 
+use App\Infrastructure\Exception\MethodNotAllowedException;
+use App\Infrastructure\Exception\NotFoundException;
 use DevCoder\Exception\MethodNotAllowed;
 use DevCoder\Exception\RouteNotFound;
 use Psr\Http\Message\ServerRequestInterface;
@@ -66,8 +68,8 @@ class Router implements RouterInterface
      *
      * @param string $path The path to match
      * @param string $method The HTTP method
-     * @throws MethodNotAllowed Method Not Allowed : $method
-     * @throws RouteNotFound No route found for $path
+     * @throws MethodNotAllowedException Method Not Allowed : $method
+     * @throws NotFoundException No route found for $path
      * @return Route
      */
     public function matchFromPath(string $path, string $method): Route
@@ -81,39 +83,36 @@ class Router implements RouterInterface
             }
 
             if (!in_array($method, $route->getMethods())) {
-                throw new MethodNotAllowed(
-                    'Method Not Allowed : ' . $method,
-                    self::METHOD_NOT_ALLOWED
-                );
+                throw new MethodNotAllowedException();
             }
             return $route;
         }
 
-        throw new RouteNotFound(
-            'No route found for ' . $path,
-            self::NO_ROUTE
-        );
+        throw new NotFoundException();
     }
 
     public function matchFromPathAndMethod(string $path, string $method): Route {
         $finalRoute = null;
+        // $existingMethods = [];
         foreach ($this->routes as $route) {
             if ($route->match($path) === false) {
                 continue;
             }
             
             if (!in_array($method, $route->getMethods())) {
+                // $existingMethods[] = $method;
                 continue;
             }
 
             $finalRoute = $route;
         }
 
+        // if (!empty($existingMethods)) {
+        //     throw new MethodNotAllowedException();
+        // }
+
         if ($finalRoute === null) {
-            throw new RouteNotFound(
-                'No route found for ' . $path,
-                self::NO_ROUTE
-            );
+            throw new NotFoundException("Route not found.");
         }
 
         return $finalRoute;

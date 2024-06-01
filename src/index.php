@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-30 15:40:53
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 23:56:30
+ * @ Modified time: 2024-06-02 00:14:30
  * @ Description:
  */
 
@@ -16,6 +16,8 @@ use App\Infrastructure\Response\StatusResponse;
 use Dotenv\Dotenv;
 use App\Infrastructure\Config\DatabaseConnection;
 use App\Infrastructure\Controllers\UserController;
+use App\Infrastructure\Exception\MethodNotAllowedException;
+use App\Infrastructure\Exception\NotFoundException;
 use App\Infrastructure\Repository\UserRepository;
 use App\Infrastructure\Response\HttpResponse;
 use App\Infrastructure\Response\HttpStatus;
@@ -39,13 +41,13 @@ $routes = require __DIR__ .'/routes/api.php';
 
 $router = new Router($routes, $_ENV['APP_URL'] ?? 'http://localhost');
 
+$requestUri = $_SERVER['REQUEST_URI'];
+$requestMethod = $_SERVER['REQUEST_METHOD'];
+
+$header = new HttpResponse();
+$header->setHeader();
+
 try {
-    $requestUri = $_SERVER['REQUEST_URI'];
-    $requestMethod = $_SERVER['REQUEST_METHOD'];
-
-    $header = new HttpResponse([$requestMethod]);
-    $header->setHeader();
-
     $route = $router->matchFromPathAndMethod($requestUri, $requestMethod);
     $handler = $route->getHandler();
     $attributes = $route->getAttributes();
@@ -76,10 +78,12 @@ try {
     
     echo $response;
 
-} catch (\DevCoder\Exception\MethodNotAllowed $exception) {
-    header("HTTP/1.0 405 Method Not Allowed");
+} catch (MethodNotAllowedException $exception) {
+    $header->setHeaderStatusCode(HttpStatus::METHOD_NOT_ALLOWED['code']);
+    echo $exception->message();
     exit();
-} catch (\DevCoder\Exception\RouteNotFound $exception) {
-    header("HTTP/1.0 404 Not Found");
+} catch (NotFoundException $exception) {
+    $header->setHeaderStatusCode(HttpStatus::NOT_FOUND['code']);
+    echo $exception->message();
     exit();
 }

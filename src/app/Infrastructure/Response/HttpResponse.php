@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-06-01 17:51:58
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 23:54:40
+ * @ Modified time: 2024-06-01 23:59:32
  * @ Description:
  */
 
@@ -13,17 +13,9 @@ use App\Infrastructure\Response\HttpStatus;
 
 final class HttpResponse
 {
-    private array $methods = [];
-
-    public function __construct(array $methods) {
-        $this->methods = $methods;
-    }
-
     public function setHeader() {
-        $methods = implode(",", $this->methods);
         header("Access-Control-Allow-Origin: *");
         header("Content-Type: application/json; charset=UTF-8");
-        header("Access-Control-Allow-Methods: {$methods}");
         header("Access-Control-Max-Age: 3600");
         header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
     }
