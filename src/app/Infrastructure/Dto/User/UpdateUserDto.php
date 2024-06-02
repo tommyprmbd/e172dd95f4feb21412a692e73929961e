@@ -3,13 +3,13 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-06-01 16:22:25
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 23:26:21
+ * @ Modified time: 2024-06-02 03:01:12
  * @ Description:
  */
 
-namespace App\Infrastructure\Dto;
+namespace App\Infrastructure\Dto\User;
 
-use App\Domain\Dto\CreateUserDtoInterface;
+use App\Domain\Dto\User\UpdateUserDtoInterface;
 use App\Infrastructure\Response\ValidationResponse;
 use App\Infrastructure\Validator\Assert\NotEmpty;
 use App\Infrastructure\Validator\Assert\StrongPassword;
@@ -17,7 +17,7 @@ use App\Infrastructure\Validator\Validation;
 use DevCoder\Validator\Assert\Email;
 use DevCoder\Validator\Assert\StringLength;
 
-class CreateUserDto implements CreateUserDtoInterface
+class UpdateUserDto implements UpdateUserDtoInterface
 {
     private $body;
 
@@ -51,7 +51,7 @@ class CreateUserDto implements CreateUserDtoInterface
             "first_name"=> [new NotEmpty(), (new StringLength())->max(50)],
             "last_name"=> [],
             "email" => [new NotEmpty(), new Email()],
-            "password" => [new NotEmpty(), new StrongPassword()]
+            "password" => []
         ]);
 
         if ($validation->validateArray($this->body) === false) {

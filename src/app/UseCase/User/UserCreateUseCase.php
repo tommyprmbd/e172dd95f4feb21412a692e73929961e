@@ -3,13 +3,13 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-06-01 14:11:48
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-02 00:21:19
+ * @ Modified time: 2024-06-02 14:24:32
  * @ Description:
  */
 
 namespace App\UseCase\User;
 
-use App\Domain\Dto\CreateUserDtoInterface;
+use App\Domain\Dto\User\CreateUserDtoInterface;
 use App\Domain\Entity\User;
 use App\Domain\Repository\UserRepositoryInterface;
 

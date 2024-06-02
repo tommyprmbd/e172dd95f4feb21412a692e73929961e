@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-31 15:22:06
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-02 02:53:40
+ * @ Modified time: 2024-06-02 14:42:51
  * @ Description:
  */
 
@@ -44,26 +44,29 @@ class EmailQueueRepository extends BaseRepository implements EmailQueueRepositor
             throw new \InvalidArgumentException('Expected EmailQueue entity object as parameter.');
         }
 
+        $newEntity = null;
         try {
             $query = $this->db()->prepare('insert into '. $this->table . ' 
-                (email, subject, message, processed_at, status, additional_info, created_by) 
+                (email, subject, message, status, additional_info, created_by) 
                 values 
-                (:email, :subject, :message, :processed_at, :status, :additional_info, :created_by)
+                (:email, :subject, :message, :status, :additional_info, :created_by)
             ');
             $query->bindValue(':email', $entity->getEmail(), \PDO::PARAM_STR);
             $query->bindValue(':subject', $entity->getSubject(), \PDO::PARAM_STR);
             $query->bindValue(':message', $entity->getMessage(), \PDO::PARAM_STR);
-            $query->bindValue(':processed_at', $entity->getProcessedAt(), \PDO::PARAM_STR);
             $query->bindValue(':status', $entity->getStatus(), \PDO::PARAM_STR);
             $query->bindValue(':additional_info', $entity->getAdditionalInfo(), \PDO::PARAM_STR);
             $query->bindValue(':created_by', $entity->getCreatedBy(), \PDO::PARAM_INT);
+            // $query->bindValue(':processed_at', $entity->getProcessedAt(), \PDO::PARAM_STR);
             $query->execute();
             $entity->setId($this->db()->lastInsertId());
+
+            $newEntity = $this->findById($entity->getId());
         } catch (\PDOException $e) {
             return $e;
         }
 
-        return $entity;
+        return $newEntity;
     }
 
     public function update($entity): EmailQueue | \PDOException {

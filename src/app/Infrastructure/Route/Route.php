@@ -3,12 +3,13 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-06-01 15:11:30
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 16:09:04
+ * @ Modified time: 2024-06-02 14:18:14
  * @ Description:
  */
 
 namespace App\Infrastructure\Route;
 
+use App\Domain\Repository\RepositoryInterface;
 use App\Infrastructure\Route\Traits\RouteTrait;
 use DevCoder\Helper;
 use InvalidArgumentException;
@@ -51,6 +52,8 @@ class Route
      */
     private array $wheres = [];
 
+    private $repository;
+
     /**
      * Constructor for the Route class.
      *
@@ -78,6 +81,8 @@ class Route
         if (in_array('GET', $this->methods) && !in_array('HEAD', $this->methods)) {
             $this->methods[] = 'HEAD';
         }
+
+        $this->setRepository();
     }
 
     /**
@@ -232,5 +237,23 @@ class Route
         foreach ($parameters as $parameter) {
             $this->where($parameter, $expression);
         }
+    }
+
+    public function setRepository() {
+        $name = $this->getName();
+        list($entity, $action) = explode('-', $name);
+        unset($action);
+        $entity = str_replace(' ','', ucwords(str_replace('_', ' ', $entity)));
+        if (substr($entity, -1) === 's') {
+            // Remove the last character
+            $entity = substr($entity, 0, -1);
+        }
+        
+        $repositoryName = "App\\Infrastructure\\Repository\\" . $entity . "Repository";
+        $this->repository = $repositoryName;
+    }
+
+    public function getRepository(): string {
+        return $this->repository;
     }
 }

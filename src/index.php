@@ -3,15 +3,17 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-30 15:40:53
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-02 01:06:52
+ * @ Modified time: 2024-06-02 13:54:46
  * @ Description:
  */
 
 require 'vendor/autoload.php';
 
 
+use App\Infrastructure\Controllers\SendEmailController;
 use App\Infrastructure\Exception\InvalidJsonException;
 use App\Infrastructure\Presenter\BasePresenter;
+use App\Infrastructure\Repository\EmailQueueRepository;
 use App\Infrastructure\Response\StatusResponse;
 use Dotenv\Dotenv;
 use App\Infrastructure\Config\DatabaseConnection;
@@ -32,9 +34,7 @@ $pdo = (new DatabaseConnection())->getConnection();
 
 /** Repositories */
 $userRepository = new UserRepository($pdo);
-
-/** Controllers */
-$userController = new UserController($userRepository);
+$emailQueueRepository = new EmailQueueRepository($pdo);
 
 /** Routes */
 $routes = require __DIR__ .'/routes/api.php';
@@ -55,7 +55,10 @@ try {
     $controllerName = $handler[0];
     $methodName = $handler[1] ?? null;
 
-    $controller = new $controllerName($userRepository);
+    $repository = $route->getRepository();
+    $repository = new $repository($pdo);
+
+    $controller = new $controllerName($repository);
     if (!is_callable($controller)) {
         $controller =  [$controller, $methodName];
     }

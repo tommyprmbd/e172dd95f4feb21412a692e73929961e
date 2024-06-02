@@ -3,13 +3,13 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-06-01 14:11:48
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-02 01:16:06
+ * @ Modified time: 2024-06-02 14:24:43
  * @ Description:
  */
 
 namespace App\UseCase\User;
 
-use App\Domain\Dto\UpdateUserDtoInterface;
+use App\Domain\Dto\User\UpdateUserDtoInterface;
 use App\Domain\Repository\UserRepositoryInterface;
 use App\Infrastructure\Exception\NotFoundException;
 

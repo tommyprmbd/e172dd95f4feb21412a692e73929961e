@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-06-02 02:35:41
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-02 02:44:52
+ * @ Modified time: 2024-06-02 14:45:36
  * @ Description:
  */
 
@@ -26,8 +26,8 @@ class EmailQueueMapper implements MapperInterface
         $email->setStatus($row->status);
         $email->setAdditionalInfo($row->additional_info);
         $email->setCreatedBy($row->created_by);
-        $email->setCreatedAt((new DateHelper($row->created_at))->createdAt());
-        $email->setUpdatedAt((new DateHelper($row->updated_at))->createdAt());
+        $email->setCreatedAt($row->created_at ? (new DateHelper($row->created_at))->createdAt() : null);
+        $email->setUpdatedAt($row->updated_at ? (new DateHelper($row->updated_at))->createdAt() : null);
         $email->setUpdatedBy($row->updated_by);
         return $email;
     }  
@@ -45,8 +45,8 @@ class EmailQueueMapper implements MapperInterface
      * @param EmailQueue $row
      */
     public static function fromModel($row) {
-        $row->setCreatedAt((new DateHelper($row->getCreatedAt()))->createdAt());
-        $row->setUpdatedAt((new DateHelper($row->getUpdatedAt()))->createdAt());
+        $row->setCreatedAt($row->getCreatedAt() ? (new DateHelper($row->getCreatedAt()))->createdAt() : null);
+        $row->setUpdatedAt($row->getUpdatedAt() ? (new DateHelper($row->getUpdatedAt()))->createdAt() : null);
         $response = $row->toArray();
         return $response;
     }

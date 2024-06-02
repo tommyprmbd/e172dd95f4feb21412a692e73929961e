@@ -9,11 +9,12 @@
 
 namespace App\Domain\Mapper;
 
+use App\Domain\Entity\BaseEntityInterface;
 use App\Domain\Entity\User;
 
 interface MapperInterface 
 {
-    public static function toModel($row) : User;
+    public static function toModel($row) : BaseEntityInterface;
 
     public static function toModelList($rows) : array;
 

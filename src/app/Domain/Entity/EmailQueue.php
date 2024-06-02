@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-06-02 02:03:01
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-02 02:43:28
+ * @ Modified time: 2024-06-02 14:39:40
  * @ Description:
  */
 
@@ -13,81 +13,86 @@ use DateTime;
 
 class EmailQueue extends BaseEntity 
 {
-    private string $email;
+    public const STATUS_WAITING = "WAITING";
+    public const STATUS_SENT = "SENT";
+    public const STATUS_FAILED = "FAILED";
+    public const STATUS_CANCELED = "CANCELED";
 
-    private string $subject;
+    private ?string $email;
 
-    private string $message;
+    private ?string $subject;
+
+    private ?string $message;
 
     private ?DateTime $processedAt;
 
-    private string $status;
+    private ?string $status;
 
-    private string $additionalInfo;
+    private ?string $additionalInfo;
 
-    private int $createdBy;
+    private ?int $createdBy;
 
     private ?DateTime $updatedAt;
 
-    private int $updatedBy;
+    private ?int $updatedBy;
 
-    public function getEmail(): string {
+    public function getEmail(): ?string {
         return $this->email;
     }
 
-    public function setEmail(string $email) {
+    public function setEmail(?string $email) {
         $this->email = $email;
     }
 
-    public function getSubject(): string {
+    public function getSubject(): ?string {
         return $this->subject;
     }
 
-    public function setSubject(string $subject) {
+    public function setSubject(?string $subject) {
         $this->subject = $subject;
     }
 
-    public function getMessage(): string {
+    public function getMessage(): ?string {
         return $this->message;
     }
 
-    public function setMessage(string $message) {
+    public function setMessage(?string $message) {
         $this->message = $message;
     }
 
-    public function getProcessedAt(): DateTime {
+    public function getProcessedAt(): ?DateTime {
         return $this->processedAt;
     }
 
-    public function setProcessedAt(DateTime $processedAt) {
+    public function setProcessedAt(?DateTime $processedAt) {
         $this->processedAt = $processedAt;
     }
 
-    public function getStatus(): string {
+    public function getStatus(): ?string {
         return $this->status;
     }
 
-    public function setStatus(string $status) {
+    public function setStatus(?string $status) {
         $this->status = $status;
     }
 
-    public function getAdditionalInfo(): string {
+    public function getAdditionalInfo(): ?string {
         return $this->additionalInfo;
     }
 
-    public function setAdditionalInfo(string $additionalInfo) {
+    public function setAdditionalInfo(?string $additionalInfo) {
         $this->additionalInfo = $additionalInfo;
     }
 
-    public function getUpdatedBy(): int {
+    public function getUpdatedBy(): ?int {
         return $this->updatedBy;
     }
 
-    public function setUpdatedBy(int $updatedBy) {
+    public function setUpdatedBy(?int $updatedBy) {
         $this->updatedBy = $updatedBy;
     }
 
-    public function getUpdatedAt(): DateTime {
+    public function getUpdatedAt(): ?DateTime {
         return $this->updatedAt;
     }
 
@@ -95,11 +100,11 @@ class EmailQueue extends BaseEntity
         $this->updatedAt = $updatedAt;
     }
 
-    public function getCreatedBy(): int {
+    public function getCreatedBy(): ?int {
         return $this->createdBy;
     }
 
-    public function setCreatedBy(int $createdBy) {
+    public function setCreatedBy(?int $createdBy) {
         $this->createdBy = $createdBy;
     }
 

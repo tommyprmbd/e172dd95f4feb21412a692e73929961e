@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-31 21:15:12
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-02 02:43:24
+ * @ Modified time: 2024-06-02 13:36:38
  * @ Description:
  */
 
@@ -15,7 +15,7 @@ abstract class BaseEntity implements BaseEntityInterface
 {
     protected int $id;
 
-    private ?DateTime $createdAt;
+    private $createdAt;
     
     public function getId() {
         return $this->id;

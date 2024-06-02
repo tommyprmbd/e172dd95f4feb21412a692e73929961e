@@ -3,16 +3,15 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-31 22:28:32
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-02 01:07:24
+ * @ Modified time: 2024-06-02 13:29:04
  * @ Description:
  */
 
 namespace App\Infrastructure\Controllers;
 
 use App\Domain\Controllers\UserControllerInterface;
-use App\Infrastructure\Dto\CreateUserDto;
-use App\Infrastructure\Dto\UpdateUserDto;
-use App\Infrastructure\Mapper\UserMapper;
+use App\Infrastructure\Dto\User\CreateUserDto;
+use App\Infrastructure\Dto\User\UpdateUserDto;
 use App\Infrastructure\Presenter\BasePresenter;
 use App\Infrastructure\Repository\UserRepository;
 use App\Infrastructure\Response\HttpStatus;
