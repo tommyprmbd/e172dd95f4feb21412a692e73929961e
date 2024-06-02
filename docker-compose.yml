@@ -2,9 +2,14 @@ version: '3.8'
 services:
   app: 
     container_name: levart_php
-    image: tommyprmbd/php-fpm8.3:latest
+    build: 
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: levart-php-fpm8.3-pgsql:latest
+    # image: tommyprmbd/php-fpm8.3:latest
     volumes:
       - ./src:/apps/api
+      - ./docker/php/logs:/var/log
     ports:
       - ${DOCKER_PHP_BIND_PORT}:9000
     networks:
