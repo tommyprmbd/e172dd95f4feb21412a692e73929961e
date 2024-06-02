@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-05-31 15:22:06
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-02 14:42:51
+ * @ Modified time: 2024-06-02 19:58:38
  * @ Description:
  */
 
@@ -37,6 +37,22 @@ class EmailQueueRepository extends BaseRepository implements EmailQueueRepositor
         }
 
         return null;
+    }
+
+    /**
+     * @return EmailQueue[]
+     */
+    public function findUnprocessedEmailQueue(): array {
+        $status = EmailQueue::STATUS_WAITING;
+        $query = $this->db()->prepare('select * from ' . $this->table . " where status = :status order by id limit 5");
+        $query->bindValue(":status", $status, \PDO::PARAM_STR);
+        $query->execute();
+        
+        $rows = $query->fetchAll(\PDO::FETCH_ASSOC);
+        if ($rows === false) {
+            return [];
+        }
+        return EmailQueueMapper::toModelList($rows);
     }
 
     public function create($entity): EmailQueue | \PDOException {
@@ -95,6 +111,7 @@ class EmailQueueRepository extends BaseRepository implements EmailQueueRepositor
             $query->bindValue(':additional_info', $entity->getAdditionalInfo(), \PDO::PARAM_STR);
             $query->bindValue(':updated_by', $entity->getUpdatedBy(), \PDO::PARAM_INT);
             $query->bindValue(':updated_at', $entity->getUpdatedAt(), \PDO::PARAM_STR);
+            $query->bindValue(':id', $entity->getId(), \PDO::PARAM_INT);
             $query->execute();
             
         } catch (\PDOException $e) {

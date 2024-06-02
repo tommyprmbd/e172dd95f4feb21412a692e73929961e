@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-06-01 01:29:05
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-02 13:56:39
+ * @ Modified time: 2024-06-02 15:55:38
  * @ Description:
  */
 
@@ -24,5 +24,8 @@ return [
     Route::delete("users-delete","/api/users/{id}", [\App\Infrastructure\Controllers\UserController::class, "delete"]),
 
     // Email
-    Route::post("email_queue-send", "/api/send-email", [\App\Infrastructure\Controllers\SendEmailController::class, "send"]),
+    Route::post("email_queue-send", "/api/send-email", [\App\Infrastructure\Controllers\SendEmailController::class, "addQueue"]),
+
+    // Trigger Email Sender
+    Route::get("email_queue-email", "/api/scheduler/send-email", [\App\Infrastructure\Controllers\SendEmailController::class,"handler"]),
 ];

@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-06-01 13:18:07
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 23:24:40
+ * @ Modified time: 2024-06-02 19:59:01
  * @ Description:
  */
 
@@ -13,6 +13,7 @@ use App\Domain\Entity\User;
 use App\Infrastructure\Mapper\UserMapper;
 use App\Infrastructure\Response\HttpStatus;
 use App\Infrastructure\Response\MetaResponse;
+use App\Infrastructure\Response\QueueHandlerResponse;
 use App\Infrastructure\Response\StatusResponse;
 use App\Infrastructure\Validator\FieldError;
 
@@ -45,6 +46,10 @@ class BasePresenter
                 HttpStatus::BAD_REQUEST['message'],
             );
             return $data->getMessage();
+        }
+
+        if ($data instanceof QueueHandlerResponse) {
+            return $data->toArray();
         }
 
         if ($data instanceof FieldError) {

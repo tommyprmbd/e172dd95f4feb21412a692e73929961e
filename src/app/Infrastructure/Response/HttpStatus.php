@@ -3,7 +3,7 @@
  * @ Author: Tommyprmbd
  * @ Create Time: 2024-06-01 17:40:10
  * @ Modified by: Tommyprmbd
- * @ Modified time: 2024-06-01 23:28:14
+ * @ Modified time: 2024-06-02 17:38:18
  * @ Description:
  */
 
@@ -44,5 +44,9 @@ class HttpStatus
     public const CREATED = [
         "code" => 201, 
         "message" => "Created."
+    ];
+    public const INTERNAL_SERVER_ERROR = [
+        "code" => 500, 
+        "message" => "Internal Server Error."
     ];
 }

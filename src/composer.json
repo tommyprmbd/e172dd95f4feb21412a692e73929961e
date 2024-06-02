@@ -8,7 +8,9 @@
         "devcoder-xyz/php-router": "^2.1",
         "nesbot/carbon": "^3.4",
         "psr/http-factory": "^1.1",
-        "devcoder-xyz/php-validator": "^2.0"
+        "devcoder-xyz/php-validator": "^2.0",
+        "guzzlehttp/guzzle": "^7.8",
+        "phpmailer/phpmailer": "^6.9"
     },
     "autoload": {
         "psr-4": {
